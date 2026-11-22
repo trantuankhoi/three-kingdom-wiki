@@ -265,8 +265,24 @@ footer p{max-width:72ch;margin:0 0 8px}
 .reginfo .who a{flex:1}
 .reginfo p{margin:8px 0 0;color:var(--ink-soft);font-size:14px}
 .mapnote{font-size:13px;color:var(--ink-soft);max-width:80ch;margin-top:18px}
-.maplink{display:inline-flex;align-items:center;gap:10px;margin-top:26px;padding:10px 16px 10px 10px;border:1px solid var(--rule);border-radius:10px;background:var(--paper);text-decoration:none;font-weight:600}
-.maplink .seal{width:34px;height:34px;font-size:18px;background:var(--seal);color:var(--seal-ink)}
+.hero .content{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:28px 56px;align-items:center}
+.hero h1{font-size:clamp(44px,6.2vw,92px)}
+.minimap{position:relative;display:grid;grid-template-columns:1fr;align-items:center;gap:10px 18px;max-width:470px;width:100%;justify-self:end;padding:12px 18px 12px 12px;border:1.5px solid var(--rule);border-radius:14px;background:var(--paper);text-decoration:none;box-shadow:0 18px 40px -26px rgb(0 0 0 / .45);transition:border-color .2s, transform .2s}
+.minimap:hover,.minimap:focus-visible{border-color:var(--seal);transform:translateY(-2px)}
+.minimap .mm{aspect-ratio:1.1 / 1;border-radius:9px;background:color-mix(in oklab, var(--bg) 70%, var(--paper));overflow:hidden}
+.minimap .mm svg{display:block;width:100%;height:100%}
+.minimap .mm path{stroke:var(--paper);stroke-width:1.4;transition:fill .6s ease}
+.minimap .cap{display:flex;flex-direction:column;gap:4px;min-width:0}
+.minimap .ey{font-variant-numeric:tabular-nums}
+.minimap .cap b{font-family:var(--font-display);font-size:21px;line-height:1.15}
+.minimap .cap .et{font-size:13.5px;color:var(--ink-soft);min-height:2.6em}
+.minimap .dots{display:flex;gap:4px;margin-top:4px}
+.minimap .dots i{width:14px;height:4px;border-radius:2px;background:var(--rule);transition:background .3s}
+.minimap .dots i.on{background:var(--seal)}
+.minimap .go{margin-top:6px;font-size:14px;font-weight:700;color:var(--seal)}
+.mm-seal{position:absolute;top:-16px;right:-12px;z-index:2;width:62px;height:62px;display:grid;place-items:center;text-align:center;padding:6px;font-size:17px;line-height:1.05;background:var(--seal);color:var(--seal-ink);border-radius:7px;transform:rotate(5deg);box-shadow:0 10px 20px -10px rgb(0 0 0 / .5);word-break:break-all}
+@media (max-width:900px){.hero .content{grid-template-columns:1fr;row-gap:0}.hero .htext{display:contents}.hero .kicker,.hero h1,.hero .lede{order:1}.minimap{order:2;margin-top:24px}.hero .stats{order:3}.minimap{justify-self:stretch;max-width:560px;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}}
+@media (max-width:480px){.minimap{grid-template-columns:1fr;padding:12px}.minimap .mm{aspect-ratio:1.25 / 1}.mm-seal{width:50px;height:50px;font-size:14px;top:-12px;right:-6px}}
 @media (max-width:860px){.mapgrid{grid-template-columns:1fr}.rlabels text{font-size:13px}.pl text{font-size:13.5px}}
 
 
@@ -287,7 +303,7 @@ footer p{max-width:72ch;margin:0 0 8px}
 @media (max-width:760px){
   .tree-wide{display:none}
   .tlist{display:block}
-  .hero h1{font-size:44px}
+  .hero h1{font-size:40px}
   .hero .back{opacity:.35}
   .hero p.lede{font-size:16px}
   .hero .content{padding-block:36px 40px}
@@ -368,6 +384,20 @@ function init(){
   $("#scrim").addEventListener("click",closeDrawer);
 }
 
+let mmTimer=null;
+function drawMini(){
+  clearInterval(mmTimer);
+  const box=$("#mm");if(!box)return;
+  const draw=()=>{if(!document.contains(box))return;
+    const [x0,y0]=proj(99.5,42.8),[x1,y1]=proj(125.5,18.8);
+    box.innerHTML=`<svg viewBox="${x0.toFixed(0)} ${y0.toFixed(0)} ${(x1-x0).toFixed(0)} ${(y1-y0).toFixed(0)}" preserveAspectRatio="xMidYMid meet"><defs><pattern id="mmh" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="var(--paper)"/><line x1="0" y1="0" x2="0" y2="6" stroke="var(--rule)" stroke-width="3"/></pattern></defs>${Object.entries(MAP.regions).map(([k,r])=>`<path data-r="${k}" d="${r.d}"/>`).join("")}</svg>`;
+    let i=0;const show=()=>{const e=ERAS[i];box.querySelectorAll("path").forEach(p=>{const f=e.o[p.dataset.r];p.style.fill=f==="khac"?"url(#mmh)":COLORS[f]});
+      $("#mmY").textContent="Năm "+e.y;$("#mmT").textContent=e.t;document.querySelectorAll(".minimap .dots i").forEach((d,j)=>d.classList.toggle("on",j===i))};
+    const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(reduce){i=5;show();return}
+    show();mmTimer=setInterval(()=>{if(!document.contains(box)){clearInterval(mmTimer);return}i=(i+1)%ERAS.length;show()},2200)};
+  if(MAP)draw();else fetch("map.json").then(r=>r.json()).then(m=>{MAP=m;draw()}).catch(()=>{box.hidden=true});
+}
 function route(){
   const h=decodeURIComponent(location.hash.slice(1));
   closeDrawer(true);
@@ -503,13 +533,14 @@ function renderHome(){
     <div class="plane back han" data-depth="0.35" aria-hidden="true"><span>三</span><span>國</span></div>
     <div class="plane slips" data-depth="0.18" aria-hidden="true">${[62,48,78,40,70,54].map(h=>`<i style="height:${h}%"></i>`).join("")}</div>
     <div class="wrap content">
+      <div class="htext">
       <div class="kicker">Tam quốc diễn nghĩa · bản dịch Phan Kế Bính</div>
       <h1>Ai theo ai <em>trong một trăm hai mươi hồi</em></h1>
       <p class="lede">Sơ đồ nhân vật chia theo từng nhà, từng phe, mỗi phe một trang. Bấm vào tên bất kỳ để xem người ấy là ai, có quan hệ với ai, và đã đi qua những phe nào.</p>
-      <a class="maplink" href="#ban-do"><span class="seal han">圖</span>Xem bản đồ các nước qua mười thời kỳ</a>
       <div class="stats"><div><b>${total}</b><span>nhân vật</span></div><div><b>${D.factions.length}</b><span>nhà và phe</span></div><div><b>${D.rels.length}</b><span>mối quan hệ</span></div><div><b>${movers}</b><span>người đổi chủ</span></div></div>
+      </div>
+      <a class="minimap" href="#ban-do" aria-label="Mở bản đồ các nước qua mười thời kỳ"><span class="mm-seal han" aria-hidden="true">人物志</span><div class="mm" id="mm" aria-hidden="true"></div><div class="cap"><span class="ey" id="mmY">Năm 190</span><b>Bản đồ các nước qua mười thời kỳ</b><span class="et" id="mmT">Liên quân đánh Đổng Trác</span><span class="dots" aria-hidden="true">${ERAS.map((_,i)=>`<i data-i="${i}"></i>`).join("")}</span><span class="go">Mở bản đồ →</span></div></a>
     </div>
-    <div class="plane front" data-depth="-0.12" aria-hidden="true"><div class="big-seal han"><span>人</span><span>物</span><span>志</span></div></div>
   </section>
   <section class="block"><div class="wrap">
     <div class="sec-head"><h2>Các nhà và phe</h2><p>Xếp theo thứ tự xuất hiện trong truyện, từ triều đình nhà Hán đến khi ba nước về một mối nhà Tấn.</p></div>
@@ -521,6 +552,7 @@ function renderHome(){
     <div class="arcnote" id="arcnote" aria-live="polite">Dòng lớn nhất đổ về Tào Ngụy: tướng của Lã Bố, Viên Thiệu và Kinh Châu lần lượt ra hàng.</div>
   </div></section>`;
   drawArcs(mv);
+  drawMini();
   setupParallax();
 }
 
