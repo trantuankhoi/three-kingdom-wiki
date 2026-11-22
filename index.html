@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Sơ đồ nhân vật Tam quốc diễn nghĩa (bản dịch Phan Kế Bính) theo từng nhà, từng phe, kèm bản đồ các nước qua mười thời kỳ.">
+<meta name="color-scheme" content="light dark">
+<title>Tam Quốc Nhân Vật Chí</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,700;0,800;1,500&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@900&text=%E4%B8%89%E4%BA%BA%E5%90%B3%E5%91%82%E5%9C%8B%E5%B7%BE%E5%BF%97%E6%99%89%E6%B6%BC%E6%BC%94%E6%BC%A2%E7%89%A9%E7%9B%8A%E7%B4%B9%E7%BE%A4%E7%BE%A9%E8%8D%8A%E8%91%A3%E8%9C%80%E8%A0%BB%E8%A1%93%E9%9A%B1%E9%AD%8F%E9%BB%83%E5%9C%96&display=swap">
+<style>
+/* Layout: a hồ sơ (dossier) of hand-pressed seals on celadon paper. Home = cover + map of who changed lords; each faction = one page: gia phả, sơ đồ tổ chức, dòng người đến đi. */
+:root{
+  --bg:#ECEFE9; --paper:#F6F7F2; --ink:#1C2220; --ink-soft:#5A6560; --rule:#C9D0C8; --seal:#B23A2B; --seal-ink:#FFF8F2;
+  --fcmix:0%;
+  --font-display:"Alegreya", "Noto Serif", Georgia, serif;
+  --font-text:"Be Vietnam Pro", "Segoe UI", system-ui, sans-serif;
+  --font-han:"Noto Serif TC", "Songti TC", "PMingLiU", serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#101614; --paper:#17201D; --ink:#E3E8E1; --ink-soft:#9AA79F; --rule:#2C3833; --seal:#D4553F; --seal-ink:#1A0F0C; --fcmix:48%; color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#101614; --paper:#17201D; --ink:#E3E8E1; --ink-soft:#9AA79F; --rule:#2C3833; --seal:#D4553F; --seal-ink:#1A0F0C; --fcmix:48%; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-text);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+[style*="--fc"]{--fc-ink:color-mix(in oklab, var(--fc), var(--ink) var(--fcmix))}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--seal);outline-offset:2px;border-radius:3px}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0;line-height:1.1}
+.han{font-family:var(--font-han);font-weight:900}
+
+/* top bar */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top, 0px);z-index:30;background:var(--bg)}
+.bar{position:sticky;top:env(safe-area-inset-top, 0px);z-index:20;background:color-mix(in oklab, var(--bg) 88%, transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+.bar .wrap{display:flex;align-items:center;gap:14px;padding-block:10px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex:none}
+.brand .stamp{width:34px;height:34px;display:grid;place-items:center;background:var(--seal);color:var(--seal-ink);border-radius:4px;font-size:15px;line-height:1;transform:rotate(-3deg)}
+.brand b{font-family:var(--font-display);font-size:19px;font-weight:800;letter-spacing:.01em}
+.search{position:relative;flex:1;max-width:420px;margin-left:auto}
+.search input{width:100%;padding:9px 12px 9px 34px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);border-radius:8px;font:inherit}
+.search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:15px;height:15px;stroke:var(--ink-soft)}
+.results{position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--paper);border:1px solid var(--rule);border-radius:10px;box-shadow:0 14px 40px -12px rgb(0 0 0 / .35);max-height:60vh;overflow:auto;padding:6px}
+.results button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:8px 10px;border:0;background:none;border-radius:6px;cursor:pointer}
+.results button:hover,.results button[aria-selected="true"]{background:color-mix(in oklab, var(--seal) 10%, transparent)}
+.results small{color:var(--ink-soft)}
+.results .none{padding:10px;color:var(--ink-soft)}
+
+/* faction tabs */
+.tabs{border-bottom:1px solid var(--rule);background:var(--bg)}
+.tabs .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:8px;scrollbar-width:thin}
+.tab{flex:none;display:flex;align-items:center;gap:7px;padding:5px 11px 5px 6px;border:1px solid var(--rule);border-radius:999px;text-decoration:none;font-size:13.5px;white-space:nowrap;background:var(--paper)}
+.tab .mini{width:22px;height:22px;border-radius:4px;display:grid;place-items:center;background:var(--fc);color:#fff;font-size:12px}
+.tab[aria-current="page"]{border-color:var(--fc-ink);box-shadow:inset 0 0 0 1px var(--fc-ink);font-weight:600}
+
+/* seal */
+.seal{display:inline-grid;place-items:center;background:var(--fc);color:#fff;border-radius:5px;font-family:var(--font-han);font-weight:900;line-height:1;flex:none}
+
+/* hero */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--rule);isolation:isolate}
+.hero .plane{position:absolute;inset:0;pointer-events:none;will-change:transform}
+.hero .back{display:flex;align-items:center;justify-content:flex-end;gap:0;padding-right:2vw;z-index:0}
+.hero .back span{font-size:clamp(180px,34vw,470px);line-height:.9;color:transparent;-webkit-text-stroke:1.5px color-mix(in oklab, var(--ink) 16%, transparent)}
+.hero .back span+span{margin-top:18vw}
+.hero .slips{z-index:1;display:flex;justify-content:flex-end;gap:clamp(10px,1.6vw,22px);padding-right:clamp(16px,8vw,140px);opacity:.55}
+.hero .slips i{display:block;width:clamp(14px,1.8vw,24px);background:linear-gradient(var(--rule),transparent);border-radius:0 0 3px 3px}
+.hero .content{position:relative;z-index:2;padding-block:clamp(48px,9vw,120px) clamp(36px,6vw,72px)}
+.hero .kicker{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
+.hero h1{font-size:clamp(44px,8.2vw,112px);font-weight:800;letter-spacing:-.015em;margin-top:14px;max-width:11ch}
+.hero h1 em{font-style:italic;font-weight:500;color:var(--seal);display:block}
+.hero p.lede{max-width:56ch;margin-top:22px;font-size:17px;color:var(--ink-soft)}
+.hero .front{z-index:3;display:flex;align-items:flex-end;justify-content:flex-end;padding:0 clamp(16px,6vw,96px) clamp(28px,5vw,64px) 0}
+.hero .front .big-seal{width:clamp(84px,10vw,132px);aspect-ratio:1;background:var(--seal);color:var(--seal-ink);display:grid;grid-template-columns:1fr 1fr;place-items:center;padding:10px;border-radius:8px;transform:rotate(4deg);font-size:clamp(26px,3.2vw,42px);box-shadow:0 18px 30px -18px rgb(0 0 0 / .5)}
+.hero .front .big-seal span:nth-child(3){grid-column:1 / -1}
+.stats{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:30px;font-variant-numeric:tabular-nums}
+.stats div{display:flex;flex-direction:column}
+.stats b{font-family:var(--font-display);font-size:34px;font-weight:800;line-height:1}
+.stats span{font-size:13px;color:var(--ink-soft)}
+
+section.block{padding-block:clamp(40px,6vw,72px)}
+.sec-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 24px;margin-bottom:22px}
+.sec-head h2{font-size:clamp(28px,3.4vw,40px);font-weight:800}
+.sec-head p{margin:0;color:var(--ink-soft);max-width:60ch}
+
+/* faction grid */
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.fcard{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;padding:16px;background:var(--paper);border:1px solid var(--rule);border-radius:10px;text-decoration:none;transition:transform .18s ease, border-color .18s ease}
+.fcard:hover{transform:translateY(-2px);border-color:var(--fc-ink)}
+.fcard .seal{width:54px;height:54px;font-size:26px;grid-row:span 2}
+.fcard .seal.two{font-size:19px}
+.fcard h3{font-size:21px;font-weight:700}
+.fcard .era{font-size:12.5px;color:var(--ink-soft)}
+.fcard .names{grid-column:1 / -1;margin-top:10px;font-size:13.5px;color:var(--ink-soft)}
+.fcard .names b{color:var(--fc-ink);font-weight:600}
+.fcard .count{grid-column:1 / -1;margin-top:8px;font-size:12.5px;font-weight:600;color:var(--fc-ink);font-variant-numeric:tabular-nums}
+
+/* arc map */
+.scroller{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--rule);border-radius:10px;background:var(--paper)}
+.arcmap svg{display:block}
+.arcmap text{fill:var(--ink);font-family:var(--font-text)}
+.arcmap .arc{fill:none;stroke-linecap:round;opacity:.5;transition:opacity .15s}
+.arcmap .arc:hover,.arcmap .arc.on{opacity:1}
+.arcmap.dim .arc:not(.on){opacity:.12}
+.arcnote{min-height:3.2em;margin-top:10px;font-size:14px;color:var(--ink-soft)}
+.arcnote b{color:var(--ink)}
+
+/* faction page */
+.fhead{position:relative;overflow:hidden;border-bottom:1px solid var(--rule)}
+.fhead .water{position:absolute;right:-2vw;top:50%;transform:translateY(-50%);font-size:clamp(200px,30vw,420px);line-height:1;color:color-mix(in oklab, var(--fc) 13%, transparent);pointer-events:none;will-change:transform}
+.fhead .wrap{position:relative;padding-block:clamp(36px,6vw,72px)}
+.fhead .crumb{font-size:13px;color:var(--ink-soft);display:flex;gap:8px;align-items:center}
+.fhead h1{font-size:clamp(38px,6vw,80px);font-weight:800;margin-top:10px;color:var(--fc-ink)}
+.fhead .era{margin-top:10px;font-weight:600}
+.fhead p{max-width:64ch;color:var(--ink-soft);margin:14px 0 0;font-size:16px}
+.fhead .stats b{color:var(--fc-ink)}
+
+.jump{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.jump a{font-size:13px;padding:5px 11px;border:1px solid var(--rule);border-radius:999px;text-decoration:none;background:var(--paper)}
+
+/* family tree */
+.tree svg{display:block}
+.tree .box{fill:var(--paper);stroke:var(--rule)}
+.tree .node{cursor:pointer}
+.tree .node:hover .box,.tree .node:focus .box{stroke:var(--fc-ink);stroke-width:2}
+.tree .node.key .box{stroke:var(--fc-ink);stroke-width:1.6}
+.tree .node.ghost .box{stroke-dasharray:4 3;fill:transparent}
+.tree .nm{fill:var(--ink);font:600 12.5px var(--font-text)}
+.tree .node.key .nm{font-weight:700}
+.tree .tu{fill:var(--ink-soft);font:400 10.5px var(--font-text)}
+.tree .ln{stroke:var(--ink-soft);fill:none;stroke-width:1.2}
+.tree .ln.adopt{stroke-dasharray:5 4}
+.tree .sp{stroke:var(--fc-ink);stroke-width:1.2}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:12.5px;color:var(--ink-soft);margin-top:10px}
+.legend i{display:inline-block;width:26px;height:0;border-top:1.5px solid var(--ink-soft);vertical-align:middle;margin-right:6px}
+.legend i.d{border-top-style:dashed}
+.legend i.s{border-top:3px double var(--seal)}
+
+/* org chart */
+.org{--line:color-mix(in oklab, var(--fc-ink) 45%, var(--rule))}
+.org .root{display:flex;justify-content:center}
+.org .root .rootseal{display:flex;align-items:center;gap:12px;padding:10px 16px 10px 10px;background:var(--paper);border:1.5px solid var(--fc-ink);border-radius:10px}
+.org .root .seal{width:42px;height:42px;font-size:21px}
+.org .root b{font-family:var(--font-display);font-size:20px}
+.org .trunk{width:1.5px;height:22px;background:var(--line);margin:0 auto}
+.org .branches{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:26px 18px;border-top:1.5px solid var(--line);padding-top:0}
+.org .branch{position:relative;padding-top:22px}
+.org .branch::before{content:"";position:absolute;top:0;left:14px;width:1.5px;height:22px;background:var(--line)}
+.org .branch h3{font-family:var(--font-text);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--fc-ink);display:flex;gap:8px;align-items:baseline;padding:6px 10px;background:color-mix(in oklab, var(--fc) 10%, var(--paper));border-radius:6px;margin-left:4px}
+.org .branch h3 small{font-weight:500;letter-spacing:0;text-transform:none;color:var(--ink-soft);margin-left:auto;font-variant-numeric:tabular-nums}
+.org ul{list-style:none;margin:6px 0 0 14px;padding:0 0 0 0;border-left:1.5px solid var(--line)}
+.org li{position:relative;padding:3px 0 3px 14px}
+.org li::before{content:"";position:absolute;left:0;top:50%;width:10px;height:1.5px;background:var(--line)}
+.org li:last-child{background:linear-gradient(var(--bg),var(--bg)) no-repeat 0 calc(50% + 1px) / 2px 100%;margin-left:-1.5px;padding-left:15.5px}
+.org li:last-child::before{left:1.5px}
+.chip{display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 8px;width:100%;text-align:left;padding:6px 10px;background:var(--paper);border:1px solid var(--rule);border-radius:7px;cursor:pointer;transition:border-color .15s, background .15s}
+.chip:hover{border-color:var(--fc-ink)}
+.chip .n{font-weight:600}
+.chip.key .n{font-family:var(--font-display);font-weight:800;font-size:16.5px;color:var(--fc-ink)}
+.chip .t{font-size:12.5px;color:var(--ink-soft)}
+.chip .mv{margin-left:auto;display:flex;gap:4px;align-items:center;font-size:11.5px;color:var(--ink-soft)}
+.chip .mv .seal{width:18px;height:18px;font-size:10.5px;border-radius:3px}
+.chip.ghost{background:transparent;border-style:dashed}
+.chip.flash{animation:flash 1.6s ease}
+@keyframes flash{0%,40%{background:color-mix(in oklab, var(--seal) 22%, var(--paper));border-color:var(--seal)}}
+
+/* flow */
+.flow{position:relative;display:grid;grid-template-columns:1fr auto 1fr;gap:20px 70px;align-items:center}
+.flow svg.links{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.flow svg.links path{fill:none;stroke-linecap:round;opacity:.45}
+.flow .col{display:flex;flex-direction:column;gap:10px;position:relative;z-index:1}
+.flow .col h3{font-family:var(--font-text);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+.flow .row{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;align-items:start;padding:10px;background:var(--paper);border:1px solid var(--rule);border-radius:9px}
+.flow .row .seal{width:30px;height:30px;font-size:15px;text-decoration:none}
+.flow .row .who{grid-column:2;display:flex;flex-wrap:wrap;gap:4px}
+.flow .row .who button{border:0;background:color-mix(in oklab, var(--fc) 12%, transparent);padding:2px 8px;border-radius:999px;font-size:13px;cursor:pointer}
+.flow .row .who button:hover{background:color-mix(in oklab, var(--fc) 26%, transparent)}
+.flow .row .lbl{font-size:12.5px;font-weight:600;color:var(--fc-ink);grid-column:2}
+.flow .hub{position:relative;z-index:1;display:grid;place-items:center;gap:8px;text-align:center}
+.flow .hub .seal{width:84px;height:84px;font-size:40px;border-radius:9px}
+.flow .hub b{font-family:var(--font-display);font-size:17px;max-width:12ch}
+.flow .empty{color:var(--ink-soft);font-size:14px;padding:10px}
+
+.pager{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid var(--rule);padding-block:28px}
+.pager a{display:flex;align-items:center;gap:12px;text-decoration:none;padding:12px 14px;border:1px solid var(--rule);border-radius:10px;background:var(--paper);min-width:0}
+.pager a .seal{width:40px;height:40px;font-size:20px}
+.pager a small{display:block;color:var(--ink-soft);font-size:12px}
+.pager a b{font-family:var(--font-display);font-size:18px}
+.pager a.next{margin-left:auto;text-align:right;flex-direction:row-reverse}
+
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgb(0 0 0 / .32);z-index:40;opacity:0;transition:opacity .2s}
+.scrim.on{opacity:1}
+.drawer{position:fixed;z-index:41;top:0;right:0;bottom:0;width:min(440px,100%);background:var(--paper);border-left:1px solid var(--rule);box-shadow:-20px 0 50px -20px rgb(0 0 0 / .4);overflow:auto;padding:calc(env(safe-area-inset-top, 0px) + 22px) max(22px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 28px) 22px;transform:translateX(102%);transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+.drawer.on{transform:none}
+.drawer .close{position:absolute;top:calc(env(safe-area-inset-top, 0px) + 14px);right:max(14px, env(safe-area-inset-right, 0px));border:1px solid var(--rule);background:var(--bg);border-radius:8px;width:36px;height:36px;cursor:pointer;font-size:18px;line-height:1}
+.drawer .who{display:flex;gap:14px;align-items:center;padding-right:44px}
+.drawer .who .seal{width:52px;height:52px;font-size:25px}
+.drawer h2{font-size:30px;font-weight:800}
+.drawer .tu{color:var(--ink-soft);margin-top:4px}
+.drawer .note{font-size:16px;margin-top:18px}
+.drawer h4{margin:26px 0 10px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+.thread{display:flex;align-items:center;flex-wrap:wrap;gap:0;row-gap:10px}
+.thread a{display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;font-size:11.5px;max-width:84px;text-align:center}
+.thread a .seal{width:40px;height:40px;font-size:19px}
+.thread a.cur .seal{outline:2px solid var(--fc-ink);outline-offset:3px}
+.thread .str{flex:1;min-width:22px;height:2px;margin:0 4px 18px;background:repeating-linear-gradient(90deg,var(--seal) 0 6px,transparent 6px 10px)}
+.rels{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.rels button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:1px solid var(--rule);background:var(--bg);border-radius:8px;padding:8px 10px;cursor:pointer}
+.rels button:hover{border-color:var(--fc-ink)}
+.rels .seal{width:24px;height:24px;font-size:12px;border-radius:4px}
+.rels small{display:block;color:var(--ink-soft);font-size:12.5px}
+.drawer .go{display:inline-block;margin-top:22px;font-size:14px;font-weight:600;color:var(--fc-ink)}
+
+footer{border-top:1px solid var(--rule);padding-block:28px 40px;color:var(--ink-soft);font-size:13.5px}
+footer p{max-width:72ch;margin:0 0 8px}
+
+
+/* map */
+.eras{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:18px;scrollbar-width:thin}
+.eras button{flex:none;display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:150px;padding:9px 12px;border:1px solid var(--rule);border-radius:9px;background:var(--paper);cursor:pointer;text-align:left}
+.eras button b{font-family:var(--font-display);font-size:20px;font-variant-numeric:tabular-nums}
+.eras button span{font-size:12px;color:var(--ink-soft);line-height:1.3}
+.eras button[aria-selected="true"]{border-color:var(--seal);box-shadow:inset 0 0 0 1px var(--seal)}
+.eras button[aria-selected="true"] b{color:var(--seal)}
+.mapgrid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:22px;align-items:start}
+.mapbox{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:10px}
+.mapsvg svg{display:block;width:100%;height:auto}
+.reg{stroke:var(--paper);stroke-width:1.2;cursor:pointer;transition:fill .45s ease}
+.reg:hover,.reg:focus{stroke:var(--ink);stroke-width:1.6;outline:none}
+.reg.sel{stroke:var(--ink);stroke-width:2.2}
+.rlabels text{font:600 10.5px var(--font-text);fill:#fff;paint-order:stroke;stroke:rgb(0 0 0 / .45);stroke-width:2.4px;pointer-events:none}
+.pl text{font:700 11px var(--font-text);fill:var(--ink);paint-order:stroke;stroke:var(--paper);stroke-width:3.2px}
+.pl rect{fill:var(--paper);stroke:var(--ink);stroke-width:2}
+.pl path{stroke:var(--seal);stroke-width:2.6;stroke-linecap:round}
+.pl.b text{fill:var(--seal)}
+.mapkeys{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--ink-soft);padding:8px 4px 2px}
+.mapkeys i{display:inline-block;width:11px;height:11px;vertical-align:-1px;margin-right:6px}
+.mapkeys .kc{border:2px solid var(--ink);background:var(--paper)}
+.mapkeys .kb{background:linear-gradient(45deg,transparent 42%,var(--seal) 42% 58%,transparent 58%),linear-gradient(-45deg,transparent 42%,var(--seal) 42% 58%,transparent 58%)}
+.mapkeys .kk{background:repeating-linear-gradient(45deg,var(--rule) 0 2px,var(--paper) 2px 5px);border:1px solid var(--rule)}
+.eranav{display:flex;align-items:center;gap:12px}
+.eranav>div{flex:1}
+.eranav button{width:40px;height:40px;border:1px solid var(--rule);border-radius:9px;background:var(--paper);cursor:pointer;font-size:18px;flex:none}
+.eranav button:disabled{opacity:.35;cursor:default}
+.ey{font-size:13px;font-weight:700;color:var(--seal);letter-spacing:.06em;text-transform:uppercase}
+.mapside h2{font-size:clamp(24px,2.6vw,32px);font-weight:800;margin-top:2px}
+.mapside>p{color:var(--ink-soft);margin:14px 0 0}
+.mapside h4{margin:22px 0 10px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+.mlegend{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
+.mlegend a,.reginfo .who a{display:flex;align-items:center;gap:9px;text-decoration:none;padding:6px 8px;border:1px solid var(--rule);border-radius:8px;background:var(--paper)}
+.mlegend a:hover,.reginfo .who a:hover{border-color:var(--fc-ink)}
+.mlegend .seal,.reginfo .seal{width:28px;height:28px;font-size:14px}
+.mlegend .seal.two,.reginfo .seal.two{font-size:10px}
+.mlegend b{display:block;font-size:13.5px;line-height:1.2}
+.mlegend small{color:var(--ink-soft);font-size:12px}
+.reginfo{margin-top:16px;padding:14px;border:1px dashed var(--rule);border-radius:10px;min-height:96px}
+.reginfo .hint{color:var(--ink-soft);font-size:14px}
+.reginfo b{font-family:var(--font-display);font-size:19px}
+.reginfo .who{display:flex;align-items:center;gap:9px;margin-top:8px}
+.reginfo .who a{flex:1}
+.reginfo p{margin:8px 0 0;color:var(--ink-soft);font-size:14px}
+.mapnote{font-size:13px;color:var(--ink-soft);max-width:80ch;margin-top:18px}
+.maplink{display:inline-flex;align-items:center;gap:10px;margin-top:26px;padding:10px 16px 10px 10px;border:1px solid var(--rule);border-radius:10px;background:var(--paper);text-decoration:none;font-weight:600}
+.maplink .seal{width:34px;height:34px;font-size:18px;background:var(--seal);color:var(--seal-ink)}
+@media (max-width:860px){.mapgrid{grid-template-columns:1fr}.rlabels text{font-size:13px}.pl text{font-size:13.5px}}
+
+
+/* mobile family list */
+.tlist{display:none;list-style:none;margin:0;padding:0}
+.tlist ul{list-style:none;margin:0 0 0 14px;padding:0 0 0 12px;border-left:1.5px solid color-mix(in oklab, var(--fc-ink) 40%, var(--rule))}
+.tlist li{padding:4px 0}
+.tlist ul>li{position:relative}
+.tlist ul>li::before{content:"";position:absolute;left:-12px;top:22px;width:10px;border-top:1.5px solid color-mix(in oklab, var(--fc-ink) 40%, var(--rule))}
+.tlist ul>li.ad::before{border-top-style:dashed}
+.tlist .tn{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px;width:100%;text-align:left;padding:8px 11px;background:var(--paper);border:1px solid var(--rule);border-radius:8px;cursor:pointer;font-size:15px}
+.tlist .tn.key b{font-family:var(--font-display);font-size:17px;color:var(--fc-ink)}
+.tlist .tn.ghost{background:transparent;border-style:dashed}
+.tlist .tn small{color:var(--ink-soft);font-size:12.5px}
+.tlist .tn .sp{flex-basis:100%;font-size:13px;color:var(--ink-soft)}
+.tlist .tn .sp::before{content:"Vợ: ";font-weight:600;color:var(--seal)}
+.tlist .tn .adl{font-size:11.5px;color:var(--seal);font-weight:600}
+@media (max-width:760px){
+  .tree-wide{display:none}
+  .tlist{display:block}
+  .hero h1{font-size:44px}
+  .hero .back{opacity:.35}
+  .hero p.lede{font-size:16px}
+  .hero .content{padding-block:36px 40px}
+  .fhead .water{opacity:.45;top:auto;bottom:-30px;transform:none!important;font-size:170px}
+  .fhead h1{font-size:40px}
+  .mapbox{margin-inline:-10px;padding:4px;border-radius:10px}
+  .rlabels text{font-size:16px!important;stroke-width:3.4px}
+  .eras button{width:128px}
+  .stats b{font-size:28px}
+}
+
+@media (max-width:760px){
+  .flow{grid-template-columns:1fr;gap:18px}
+  .flow svg.links{display:none}
+  .flow .hub{order:-1;grid-auto-flow:column;justify-content:start;text-align:left}
+  .flow .hub .seal{width:56px;height:56px;font-size:28px}
+  .hero .back span+span{display:none}
+  .hero .slips{display:none}
+  .brand b{display:none}
+  .drawer{top:auto;width:100%;max-height:86vh;border-left:0;border-top:1px solid var(--rule);border-radius:16px 16px 0 0;transform:translateY(102%)}
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .plane,.fhead .water{transform:none!important}
+  .drawer,.scrim,.fcard{transition:none}
+  .chip.flash{animation:none;border-color:var(--seal)}
+}
+</style>
+<style>html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="#"><span class="stamp han" aria-hidden="true">三國</span><b>Nhân Vật Chí</b></a>
+    <div class="search" role="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Tìm nhân vật, ví dụ Khương Duy" autocomplete="off" aria-label="Tìm nhân vật" aria-controls="results">
+      <div class="results" id="results" role="listbox" hidden></div>
+    </div>
+  </div>
+</header>
+<nav class="tabs" aria-label="Các phe"><div class="wrap" id="tabs"></div></nav>
+
+<main id="view"><p class="wrap" style="padding-block:60px">Đang tải danh sách nhân vật…</p></main>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" aria-label="Chi tiết nhân vật" hidden></aside>
+
+<footer><div class="wrap">
+  <p>Tên người, tên tự và cách phiên âm theo bản dịch <i>Tam quốc diễn nghĩa</i> của Phan Kế Bính (Bùi Kỷ hiệu đính). Mỗi người được ghi ở phe gắn bó lâu nhất; người đổi chủ có ấn phe cũ hoặc phe mới bên cạnh tên, và hiện cả ở trang phe kia.</p>
+  <p>Truyện có hơn một nghìn tên người. Bản này gồm những người có vai trò hoặc có việc làm được kể lại; một số người chỉ được nhắc tên một lần trong một câu có thể chưa có mặt.</p>
+</div></footer>
+
+<script>
+const COLORS={khac:"#8a8f88",han:"#9A7419","khan-vang":"#A88700","dong-trac":"#6B4532","quan-hung":"#56636B","la-bo":"#8E2F5A","vien-thuat":"#6E7330","vien-thieu":"#B0601C","tay-luong":"#2C7C83","kinh-chau":"#7A5AA0","ich-chau":"#3A7FB0",thuc:"#2F7D4A",nguy:"#2B4F9A",ngo:"#B3362B",tan:"#4A2F78","di-toc":"#9A6A40","an-si":"#5F7C5A"};
+let D=null, FX={}, curFid=null;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fc=fid=>`--fc:${COLORS[fid]||"#666"}`;
+const seal=(fid,cls="",st="")=>{const f=FX[fid];return `<span class="seal ${f.han.length>1?"two":""} ${cls}" style="${fc(fid)};${st}" aria-hidden="true">${f.han}</span>`};
+const disp=n=>n.replace(/\s*\((.*?)\)\s*$/,"");
+const fold=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/đ/g,"d").replace(/Đ/g,"D").toLowerCase();
+const short=f=>f.name.replace(/^Triều đình nhà /,"Nhà ").replace(/ và .*$/,"").replace(/:.*$/,"");
+
+fetch("data.json").then(r=>r.json()).then(d=>{D=d;init()}).catch(()=>{$("#view").innerHTML='<p class="wrap" style="padding-block:60px">Không tải được dữ liệu nhân vật. Hãy tải lại trang.</p>'});
+
+function init(){
+  D.factions.forEach((f,i)=>{f.i=i;FX[f.id]=f});
+  D.byF={};D.factions.forEach(f=>D.byF[f.id]=f.groups.flatMap(g=>g.p));
+  D.relOf={};D.rels.forEach(([a,b,l])=>{(D.relOf[a]=D.relOf[a]||[]).push([b,l]);(D.relOf[b]=D.relOf[b]||[]).push([a,l])});
+  D.idx=Object.entries(D.people).map(([id,p])=>[id,fold(p.n+" "+p.t)]);
+  $("#tabs").innerHTML=`<a class="tab" href="#ban-do" data-f="ban-do" style="--fc:var(--seal)"><span class="mini han">圖</span>Bản đồ</a>`+D.factions.map(f=>`<a class="tab" href="#${f.id}" data-f="${f.id}" style="${fc(f.id)}"><span class="mini han">${f.han[0]}</span>${esc(short(f))}</a>`).join("");
+  window.addEventListener("hashchange",route);route();
+  setupSearch();setupParallax();
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDrawer()});
+  $("#scrim").addEventListener("click",closeDrawer);
+}
+
+function route(){
+  const h=decodeURIComponent(location.hash.slice(1));
+  closeDrawer(true);
+  if(FX[h]){renderFaction(h)}else if(h==="ban-do"){renderMap()}else{renderHome()}
+  document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-current",t.dataset.f===h?"page":"false"));
+  const cur=document.querySelector('.tab[aria-current="page"]');if(cur)cur.scrollIntoView({block:"nearest",inline:"center"});
+  window.scrollTo(0,0);
+}
+
+/* ---------- moves between factions ---------- */
+function moves(){
+  const m=[];
+  for(const [id,p] of Object.entries(D.people)){
+    p.from.forEach(x=>m.push([x,p.f,id]));
+    p.to.forEach(y=>m.push([p.f,y,id]));
+  }
+  return m;
+}
+
+/* ---------- MAP ---------- */
+const REG={u:"U Châu",lieudong:"Liêu Đông",ky:"Ký Châu",tinh:"Tịnh Châu",thanh:"Thanh Châu",duyen:"Duyện Châu",tu:"Từ Châu",du:"Dự Châu",hanoi:"Tư Lệ (Lạc Dương)",quantrung:"Quan Trung (Trường An)",luong:"Lương Châu",hantrung:"Hán Trung",bathuc:"Ba Thục",namtrung:"Nam Trung",namduong:"Nam Dương",tuongduong:"Tương Dương",namquan:"Nam quận (Giang Lăng)",giangha:"Giang Hạ",kntay:"Vũ Lăng, Linh Lăng",kndong:"Trường Sa, Quế Dương",hoainam:"Hoài Nam (Thọ Xuân, Hợp Phì)",giangdong:"Giang Đông (Ngô quận, Cối Kê)",danchuong:"Dự Chương, Kiến An",giao:"Giao Châu"};
+const REGS={u:"U",lieudong:"Liêu Đông",ky:"Ký",tinh:"Tịnh",thanh:"Thanh",duyen:"Duyện",tu:"Từ",du:"Dự",hanoi:"Tư Lệ",quantrung:"Quan Trung",luong:"Lương",hantrung:"Hán Trung",bathuc:"Ba Thục",namtrung:"Nam Trung",namduong:"Nam Dương",tuongduong:"Tương Dương",namquan:"Nam quận",giangha:"Giang Hạ",kntay:"Vũ Lăng",kndong:"Trường Sa",hoainam:"Hoài Nam",giangdong:"Giang Đông",danchuong:"Dự Chương",giao:"Giao"};
+const NORTH=["u","ky","tinh","thanh","duyen","tu","du","hanoi"];
+function own(base,over){const o={...base};for(const [k,v] of Object.entries(over))o[k]=v;return o}
+const P0={u:"quan-hung",lieudong:"quan-hung",ky:"quan-hung",tinh:"khac",thanh:"quan-hung",duyen:"quan-hung",tu:"quan-hung",du:"quan-hung",hanoi:"dong-trac",quantrung:"dong-trac",luong:"tay-luong",hantrung:"ich-chau",bathuc:"ich-chau",namtrung:"ich-chau",namduong:"vien-thuat",tuongduong:"kinh-chau",namquan:"kinh-chau",giangha:"kinh-chau",kntay:"kinh-chau",kndong:"ngo",hoainam:"khac",giangdong:"khac",danchuong:"khac",giao:"khac"};
+const P1=own(P0,{hanoi:"nguy",duyen:"nguy",du:"nguy",ky:"vien-thieu",thanh:"vien-thieu",tu:"la-bo",hoainam:"vien-thuat",namduong:"dong-trac",kndong:"kinh-chau",giangdong:"ngo"});
+const P2=own(P1,{quantrung:"nguy",tu:"nguy",hoainam:"nguy",namduong:"nguy",u:"vien-thieu",tinh:"vien-thieu",danchuong:"ngo"});
+const P3=own(P2,{ky:"nguy",thanh:"nguy",u:"nguy",tinh:"nguy",tuongduong:"nguy",quantrung:"tay-luong",namquan:"thuc",giangha:"thuc",kntay:"thuc",kndong:"thuc"});
+const P4=own(P3,{quantrung:"nguy",luong:"nguy",hantrung:"nguy",bathuc:"thuc",namtrung:"thuc",giangha:"ngo",kndong:"ngo",giao:"ngo"});
+const P5=own(P4,{hantrung:"thuc",namquan:"ngo",kntay:"ngo"});
+const P6=own(P5,{lieudong:"nguy"});
+const P7=own(P6,{hantrung:"nguy",bathuc:"nguy",namtrung:"nguy"});
+const P8=Object.fromEntries(Object.entries(P7).map(([k,v])=>[k,v==="nguy"?"tan":v]));
+const P9=Object.fromEntries(Object.keys(P8).map(k=>[k,"tan"]));
+const ERAS=[
+ {y:"190",t:"Liên quân đánh Đổng Trác",d:"Đổng Trác phế Thiếu Đế, đốt Lạc Dương, ép vua dời về Trường An. Các trấn hội quân ở Toan Táo dưới quyền minh chủ Viên Thiệu rồi tan rã. Tôn Kiên còn là Thái thú Trường Sa.",o:P0,
+  n:{ky:"Hàn Phức làm Mục; Viên Thiệu đóng ở Bột Hải",u:"Lưu Ngu, Công Tôn Toản",lieudong:"Công Tôn Độ",tinh:"Không có chủ rõ ràng",kndong:"Tôn Kiên, Thái thú Trường Sa",namduong:"Viên Thuật chiếm Nam Dương",hoainam:"Chưa thuộc về ai",giao:"Sĩ Nhiếp giữ, ngoài vòng chiến"},
+  pl:[["Lạc Dương",112.45,34.62,"c"],["Trường An",108.94,34.34,"c"],["Hổ Lao quan",113.25,34.83,"b"]]},
+ {y:"197",t:"Tào Tháo rước vua về Hứa Đô",d:"Tào Tháo đón Hiến Đế về Hứa Đô (196). Lã Bố đoạt Từ Châu của Lưu Bị, Viên Thuật xưng đế ở Thọ Xuân, Tôn Sách bình Giang Đông, Trương Tú giữ Uyển Thành.",o:P1,
+  n:{tu:"Lã Bố đoạt từ tay Lưu Bị (196)",hoainam:"Viên Thuật xưng đế ở Thọ Xuân",namduong:"Trương Tú (dư đảng Tây Lương) ở Uyển Thành",quantrung:"Lý Quyết, Quách Dĩ",giangdong:"Tôn Sách đánh Lưu Diêu, Nghiêm Bạch Hổ",thanh:"Viên Đàm",u:"Công Tôn Toản",tinh:"Quân Hắc Sơn"},
+  pl:[["Hứa Đô",113.85,34.03,"c"],["Uyển Thành",112.53,33.0,"b"],["Hạ Bì",117.95,34.3,"b"],["Thọ Xuân",116.78,32.58,"c"]]},
+ {y:"200",t:"Trận Quan Độ",d:"Tào đã diệt Lã Bố ở Hạ Bì (198), Viên Thuật chết (199). Viên Thiệu gồm bốn châu Hà Bắc đem quân xuống nam, thua ở Quan Độ vì mất kho lương Ô Sào.",o:P2,
+  n:{tu:"Lưu Bị chiếm lại rồi bị Tào đánh bại (200)",u:"Công Tôn Toản tự thiêu ở Dịch Kinh (199)",tinh:"Cao Cán giữ cho Viên Thiệu",quantrung:"Chung Do giữ cho Tào",namduong:"Trương Tú hàng Tào (199)",danchuong:"Tôn Sách chiếm (199)"},
+  pl:[["Hứa Đô",113.85,34.03,"c"],["Nghiệp",114.38,36.33,"c"],["Quan Độ",114.05,34.75,"b"],["Bạch Mã",114.65,35.55,"b"],["Ô Sào",114.4,35.05,"b"]]},
+ {y:"209",t:"Sau trận Xích Bích",d:"Tào Tháo dẹp xong Hà Bắc (207), xuống Kinh Châu, Lưu Tông hàng. Liên quân Tôn, Lưu đốt thuyền Tào ở Xích Bích. Theo truyện, Khổng Minh nhân lúc Chu Du đánh Tào Nhân mà lấy Nam quận, rồi Lưu Bị lấy bốn quận Kinh Nam.",o:P3,
+  n:{namquan:"Triệu Vân lấy Nam quận (theo truyện)",giangha:"Lưu Kỳ, đồng minh của Lưu Bị",kntay:"Lưu Bị lấy Vũ Lăng, Linh Lăng",kndong:"Lưu Bị lấy Trường Sa, Quế Dương",quantrung:"Mã Đằng, Hàn Toại và các tướng Quan Trung",tuongduong:"Tào Nhân, Lã Thường giữ",lieudong:"Công Tôn Khang"},
+  pl:[["Xích Bích",113.9,29.72,"b"],["Trường Bản",111.79,30.82,"b","l"],["Hợp Phì",117.27,31.86,"b"],["Nghiệp",114.38,36.33,"c"],["Sài Tang",115.99,29.7,"c"]]},
+ {y:"215",t:"Lưu Bị lấy Ích Châu, chia Kinh Châu",d:"Tào phá Mã Siêu ở Đồng Quan (211), lấy Hán Trung của Trương Lỗ (215). Lưu Bị vào Thục, Bàng Thống chết ở gò Lạc Phượng, Lưu Chương hàng (214). Tôn Quyền đòi Kinh Châu; hai bên lấy sông Tương làm ranh.",o:P4,
+  n:{namquan:"Quan Vũ trấn giữ",kntay:"Thuộc Lưu Bị",kndong:"Ngô lấy theo ước sông Tương",giangha:"Thuộc Ngô",hantrung:"Trương Lỗ hàng Tào (215)",giao:"Sĩ Nhiếp quy phục Ngô"},
+  pl:[["Thành Đô",104.07,30.67,"c","d"],["Đồng Quan",110.25,34.6,"b"],["Lạc Phượng",104.45,31.13,"b"],["Tiêu Dao Tân",117.3,31.95,"b"],["Kiến Nghiệp",118.78,32.06,"c"]]},
+ {y:"221",t:"Ba nước xưng đế",d:"Lưu Bị lấy Hán Trung, chém Hạ Hầu Uyên ở Định Quân (219). Quan Vũ dìm bảy đạo quân ở Phàn Thành nhưng bị Lã Mông đánh úp Kinh Châu, chết ở Mạch Thành. Tào Phi cướp ngôi nhà Hán (220), Lưu Bị xưng đế ở Thành Đô (221), rồi thua Lục Tốn ở Di Lăng (222).",o:P5,
+  n:{namquan:"Lã Mông đánh úp (219)",hantrung:"Lưu Bị lấy, xưng Hán Trung vương (219)",tuongduong:"Phàn Thành, Tương Dương: Tào Nhân giữ được"},
+  pl:[["Lạc Dương",112.45,34.62,"c"],["Thành Đô",104.07,30.67,"c","d"],["Vũ Xương",114.89,30.4,"c","d"],["Định Quân sơn",106.6,33.1,"b","u"],["Phàn Thành",112.14,32.12,"b","u"],["Mạch Thành",111.65,30.9,"b"],["Di Lăng",111.3,30.6,"b","l"]]},
+ {y:"238",t:"Thế chân vạc",d:"Khổng Minh bảy lần bắt Mạnh Hoạch (225), sáu lần ra Kỳ Sơn, mất Nhai Đình (228), mất ở Ngũ Trượng Nguyên (234). Tôn Quyền xưng đế (229), dời về Kiến Nghiệp. Tư Mã Ý diệt Công Tôn Uyên ở Liêu Đông (238).",o:P6,
+  n:{lieudong:"Tư Mã Ý diệt Công Tôn Uyên (238)",namtrung:"Nam chinh, bảy lần bắt Mạnh Hoạch",quantrung:"Tư Mã Ý chống Khổng Minh"},
+  pl:[["Lạc Dương",112.45,34.62,"c"],["Thành Đô",104.07,30.67,"c","d"],["Kiến Nghiệp",118.78,32.06,"c"],["Nhai Đình",105.67,34.86,"b"],["Kỳ Sơn",105.25,34.1,"b"],["Ngũ Trượng Nguyên",107.73,34.27,"b"],["Tương Bình",123.17,41.27,"b"],["Nam chinh",102.7,25.5,"b"]]},
+ {y:"263",t:"Ngụy diệt Thục",d:"Khương Duy chín lần đánh Ngụy không thành. Chung Hội đánh Kiếm Các, Đặng Ngải vượt Âm Bình, phá Miên Trúc; Lưu Thiện ra hàng. Năm sau Chung Hội làm phản, cùng Khương Duy chết trong loạn quân.",o:P7,
+  n:{bathuc:"Lưu Thiện hàng Đặng Ngải (263)",hantrung:"Chung Hội lấy",namtrung:"Theo Thục quy hàng"},
+  pl:[["Lạc Dương",112.45,34.62,"c"],["Kiến Nghiệp",118.78,32.06,"c"],["Kiếm Các",105.52,32.28,"b"],["Âm Bình",104.6,32.9,"b"],["Miên Trúc",104.2,31.34,"b"],["Đạp Trung",103.9,34.05,"b"]]},
+ {y:"266",t:"Tấn thay Ngụy",d:"Tư Mã Chiêu làm Tấn vương rồi mất (265). Con là Tư Mã Viêm ép Tào Hoán nhường ngôi, lập nhà Tấn. Đông Ngô dưới Tôn Hạo là nước cuối cùng còn đứng.",o:P8,
+  n:{},pl:[["Lạc Dương",112.45,34.62,"c"],["Kiến Nghiệp",118.78,32.06,"c"],["Tương Dương",112.14,32.04,"b"],["Tây Lăng",111.28,30.7,"b","l"]]},
+ {y:"280",t:"Tấn thống nhất",d:"Dương Hỗ, Đỗ Dự trấn Kinh Châu; Vương Tuấn đóng chiến thuyền ở Ích Châu xuôi dòng, đốt xích sắt trên sông. Tôn Hạo ra hàng ở Kiến Nghiệp. \"Thế lớn trong thiên hạ, chia lâu tất hợp\".",o:P9,
+  n:{giangdong:"Tôn Hạo hàng Vương Tuấn (280)"},pl:[["Lạc Dương",112.45,34.62,"c"],["Kiến Nghiệp",118.78,32.06,"b"],["Vũ Xương",114.89,30.4,"b"],["Tây Lăng",111.28,30.7,"b","l"]]},
+];
+let MAP=null,era=0;
+function renderMap(){
+  curFid=null;
+  $("#view").innerHTML=`<section class="fhead" style="--fc:var(--seal)"><div class="water han" data-depth="0.22" aria-hidden="true">圖</div><div class="wrap">
+    <div class="crumb"><a href="#">Nhân Vật Chí</a><span>/</span><span>Bản đồ</span></div>
+    <h1>Các nước qua các thời kỳ</h1>
+    <p>Mười mốc thời gian từ khi chư hầu nổi lên đánh Đổng Trác đến khi nhà Tấn thu về một mối. Mỗi vùng tô màu theo phe làm chủ phần lớn đất ấy. Bấm vào vùng hoặc vào ấn phe để xem thêm.</p></div></section>
+  <section class="block mapsec"><div class="wrap">
+    <div class="eras" role="tablist" aria-label="Các thời kỳ">${ERAS.map((e,i)=>`<button role="tab" data-e="${i}"><b>${e.y}</b><span>${esc(e.t)}</span></button>`).join("")}</div>
+    <div class="mapgrid">
+      <div class="mapbox"><div class="mapsvg" id="mapsvg">Đang tải bản đồ…</div>
+        <div class="mapkeys"><span><i class="kc"></i>kinh đô, thành chính</span><span><i class="kb"></i>trận lớn, sự kiện</span><span><i class="kk"></i>thế lực khác, chưa thuộc về ai</span></div></div>
+      <div class="mapside">
+        <div class="eranav"><button id="ePrev" aria-label="Thời kỳ trước">←</button><div><div class="ey" id="eY"></div><h2 id="eT"></h2></div><button id="eNext" aria-label="Thời kỳ sau">→</button></div>
+        <p id="eD"></p>
+        <h4>Các phe trên bản đồ</h4><div class="mlegend" id="eL"></div>
+        <div class="reginfo" id="eR" aria-live="polite"><span class="hint">Chạm vào một vùng để xem ai giữ đất ấy.</span></div>
+      </div>
+    </div>
+    <p class="mapnote">Bản đồ phỏng chừng. Ranh giới các châu được ghép từ địa giới tỉnh và thành phố ngày nay nên chỉ gần đúng; mỗi vùng chỉ mang một màu dù trên thực tế có khi bị chia cắt. Mốc năm theo sử; chỗ truyện kể khác sử (như việc Lưu Bị lấy Nam quận sau Xích Bích) thì theo truyện.</p>
+  </div></section>`;
+  const go=i=>{era=Math.max(0,Math.min(ERAS.length-1,i));paintEra()};
+  document.querySelectorAll(".eras button").forEach(b=>b.addEventListener("click",()=>go(+b.dataset.e)));
+  $("#ePrev").addEventListener("click",()=>go(era-1));$("#eNext").addEventListener("click",()=>go(era+1));
+  $(".mapgrid").addEventListener("keydown",e=>{if(e.key==="ArrowLeft")go(era-1);if(e.key==="ArrowRight")go(era+1)});
+  const ready=()=>{drawMap();paintEra()};
+  if(MAP)ready();else fetch("map.json").then(r=>r.json()).then(m=>{MAP=m;ready()}).catch(()=>$("#mapsvg").textContent="Không tải được bản đồ.");
+  setupParallax();
+}
+function proj(lon,lat){const p=MAP.proj;return [(lon-p.L0)*p.cs*p.k-p.X0,(p.LAT0-lat)*p.k-p.Y0]}
+function drawMap(){
+  const regs=Object.entries(MAP.regions);
+  const mob=matchMedia("(max-width:760px)").matches;let vb=`0 0 ${MAP.w} ${MAP.h}`;
+  if(mob){const [x0,y0]=proj(100.3,42.6),[x1,y1]=proj(124.8,19.5);vb=`${x0.toFixed(0)} ${y0.toFixed(0)} ${(x1-x0).toFixed(0)} ${(y1-y0).toFixed(0)}`}
+  window._mapMob=mob;
+  $("#mapsvg").innerHTML=`<svg viewBox="${vb}" role="img" aria-label="Bản đồ các châu thời Tam Quốc">
+    <defs><pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="7" fill="var(--paper)"/><line x1="0" y1="0" x2="0" y2="7" stroke="var(--rule)" stroke-width="3"/></pattern></defs>
+    <g id="regs">${regs.map(([k,r])=>`<path class="reg" data-r="${k}" d="${r.d}" tabindex="0" role="button" aria-label="${esc(REG[k])}"/>`).join("")}</g>
+    <g class="rlabels" aria-hidden="true">${regs.filter(([k])=>!["namquan","giangha","tuongduong","namduong",...(mob?["kntay","kndong","hantrung"]:[])].includes(k)).map(([k,r])=>`<text x="${r.cx+({kntay:-16,kndong:16,bathuc:mob?-6:-62}[k]||0)}" y="${r.cy+(k==="kndong"?10:0)+(k==="bathuc"&&mob?-34:0)}" text-anchor="middle">${esc(REGS[k])}</text>`).join("")}</g>
+    <g id="places"></g></svg>`;
+  const pick=k=>{const e=ERAS[era],f=e.o[k];document.querySelectorAll(".reg").forEach(p=>p.classList.toggle("sel",p.dataset.r===k));
+    $("#eR").innerHTML=`<b>${esc(REG[k])}</b><div class="who">${f==="khac"?`<span class="seal" style="--fc:#8a8f88">·</span><span>Thế lực khác</span>`:`<a href="#${f}" style="${fc(f)}">${seal(f)}<span>${esc(FX[f].name)}</span></a>`}</div>${e.n[k]?`<p>${esc(e.n[k])}</p>`:""}`;$("#eR").dataset.k=k};
+  document.querySelectorAll(".reg").forEach(p=>{p.addEventListener("click",()=>pick(p.dataset.r));p.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();pick(p.dataset.r)}});p.addEventListener("mouseenter",()=>pick(p.dataset.r))});
+  window._pickReg=pick;
+}
+function paintEra(){
+  const e=ERAS[era];if(!MAP||!$("#regs"))return;
+  document.querySelectorAll(".eras button").forEach((b,i)=>b.setAttribute("aria-selected",i===era));
+  const cur=document.querySelector('.eras button[aria-selected="true"]');if(cur)cur.scrollIntoView({block:"nearest",inline:"center"});
+  document.querySelectorAll(".reg").forEach(p=>{const f=e.o[p.dataset.r];p.style.fill=f==="khac"?"url(#hatch)":COLORS[f]});
+  $("#eY").textContent="Năm "+e.y;$("#eT").textContent=e.t;$("#eD").textContent=e.d;
+  $("#ePrev").disabled=era===0;$("#eNext").disabled=era===ERAS.length-1;
+  const cnt={};Object.values(e.o).forEach(f=>cnt[f]=(cnt[f]||0)+1);
+  $("#eL").innerHTML=Object.entries(cnt).filter(([f])=>f!=="khac").sort((a,b)=>b[1]-a[1]).map(([f,n])=>`<a href="#${f}" style="${fc(f)}">${seal(f)}<span><b>${esc(short(FX[f]))}</b><small>${n} vùng</small></span></a>`).join("");
+  $("#places").innerHTML=e.pl.map(([n,lon,lat,t,a])=>{const [x,y]=proj(lon,lat);return `<g class="pl ${t}" transform="translate(${x.toFixed(1)},${y.toFixed(1)}) scale(${window._mapMob?1.5:1})">${t==="c"?'<rect x="-4.5" y="-4.5" width="9" height="9"/>':'<path d="M-5,-5L5,5M5,-5L-5,5"/>'}<text ${a==="l"?'x="-8" y="4" text-anchor="end"':a==="d"?'x="0" y="18" text-anchor="middle"':a==="u"?'x="0" y="-9" text-anchor="middle"':'x="8" y="4"'}>${esc(n)}</text></g>`}).join("");
+  const k=$("#eR").dataset.k;if(k)window._pickReg(k);
+}
+
+/* ---------- HOME ---------- */
+function renderHome(){
+  curFid=null;
+  const total=Object.keys(D.people).length, mv=moves();
+  const movers=new Set(mv.map(x=>x[2])).size;
+  const cards=D.factions.map(f=>{
+    const ids=D.byF[f.id], keys=ids.filter(i=>D.people[i].k).slice(0,4).map(i=>`<b>${esc(disp(D.people[i].n))}</b>`);
+    return `<a class="fcard" href="#${f.id}" style="${fc(f.id)}">${seal(f.id)}<h3>${esc(f.name)}</h3><span class="era">${esc(f.era)}</span><div class="names">${keys.join(", ")}</div><div class="count">${ids.length} nhân vật · ${f.groups.length} nhóm</div></a>`}).join("");
+  $("#view").innerHTML=`
+  <section class="hero" data-hero>
+    <div class="plane back han" data-depth="0.35" aria-hidden="true"><span>三</span><span>國</span></div>
+    <div class="plane slips" data-depth="0.18" aria-hidden="true">${[62,48,78,40,70,54].map(h=>`<i style="height:${h}%"></i>`).join("")}</div>
+    <div class="wrap content">
+      <div class="kicker">Tam quốc diễn nghĩa · bản dịch Phan Kế Bính</div>
+      <h1>Ai theo ai <em>trong một trăm hai mươi hồi</em></h1>
+      <p class="lede">Sơ đồ nhân vật chia theo từng nhà, từng phe, mỗi phe một trang. Bấm vào tên bất kỳ để xem người ấy là ai, có quan hệ với ai, và đã đi qua những phe nào.</p>
+      <a class="maplink" href="#ban-do"><span class="seal han">圖</span>Xem bản đồ các nước qua mười thời kỳ</a>
+      <div class="stats"><div><b>${total}</b><span>nhân vật</span></div><div><b>${D.factions.length}</b><span>nhà và phe</span></div><div><b>${D.rels.length}</b><span>mối quan hệ</span></div><div><b>${movers}</b><span>người đổi chủ</span></div></div>
+    </div>
+    <div class="plane front" data-depth="-0.12" aria-hidden="true"><div class="big-seal han"><span>人</span><span>物</span><span>志</span></div></div>
+  </section>
+  <section class="block"><div class="wrap">
+    <div class="sec-head"><h2>Các nhà và phe</h2><p>Xếp theo thứ tự xuất hiện trong truyện, từ triều đình nhà Hán đến khi ba nước về một mối nhà Tấn.</p></div>
+    <div class="fgrid">${cards}</div>
+  </div></section>
+  <section class="block" style="padding-top:0"><div class="wrap">
+    <div class="sec-head"><h2>Bản đồ đổi chủ</h2><p>Mỗi vòng cung là một dòng người bỏ phe này sang phe khác. Cung trên chạy từ trái sang phải, cung dưới chạy ngược lại. Rê chuột hoặc chạm vào cung để xem tên.</p></div>
+    <div class="scroller arcmap" id="arcmap"></div>
+    <div class="arcnote" id="arcnote" aria-live="polite">Dòng lớn nhất đổ về Tào Ngụy: tướng của Lã Bố, Viên Thiệu và Kinh Châu lần lượt ra hàng.</div>
+  </div></section>`;
+  drawArcs(mv);
+  setupParallax();
+}
+
+function drawArcs(mv){
+  const agg={};mv.forEach(([a,b,id])=>{if(a===b)return;const k=a+">"+b;(agg[k]=agg[k]||[]).push(id)});
+  const n=D.factions.length, step=74, W=step*(n-1)+170, mid=230, H=460, x=i=>60+i*step;
+  let arcs="",max=0;Object.values(agg).forEach(v=>max=Math.max(max,v.length));
+  const entries=Object.entries(agg).sort((a,b)=>b[1].length-a[1].length);
+  entries.forEach(([k,ids])=>{
+    const [a,b]=k.split(">"),ia=FX[a].i,ib=FX[b].i,x1=x(ia),x2=x(ib),r=Math.abs(x2-x1)/2,up=x2>x1;
+    const h=Math.min(r,mid-46);
+    const y=mid+(up?-26:26);
+    const d=`M${x1},${y} C${x1},${y+(up?-h*1.33:h*1.33)} ${x2},${y+(up?-h*1.33:h*1.33)} ${x2},${y}`;
+    const w=1.5+5.5*Math.sqrt(ids.length/max);
+    arcs+=`<path class="arc" d="${d}" stroke="${COLORS[a]}" stroke-width="${w.toFixed(1)}" data-k="${k}" tabindex="0"><title>${esc(short(FX[a]))} → ${esc(short(FX[b]))}: ${ids.length} người</title></path>`;
+  });
+  const nodes=D.factions.map(f=>`<a href="#${f.id}"><rect x="${x(f.i)-19}" y="${mid-19}" width="38" height="38" rx="5" fill="${COLORS[f.id]}"/><text x="${x(f.i)}" y="${mid+(f.han.length>1?5:7)}" text-anchor="middle" fill="#fff" style="fill:#fff;font-family:var(--font-han);font-weight:900;font-size:${f.han.length>1?13:20}px">${f.han}</text><text x="${x(f.i)}" y="${mid+(f.i%2?42:-28)}" text-anchor="middle" font-size="11.5" class="flabel">${esc(short(f).replace(/^Giặc /,""))}</text></a>`).join("");
+  const box=$("#arcmap");
+  box.innerHTML=`<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Sơ đồ người đổi chủ giữa các phe">${arcs}${nodes}</svg>`;
+  const note=$("#arcnote");
+  const show=k=>{const ids=agg[k],[a,b]=k.split(">");box.classList.add("dim");box.querySelectorAll(".arc").forEach(p=>p.classList.toggle("on",p.dataset.k===k));
+    note.innerHTML=`<b>${esc(short(FX[a]))} → ${esc(short(FX[b]))}</b>, ${ids.length} người: ${ids.map(i=>esc(disp(D.people[i].n))).join(", ")}.`};
+  box.querySelectorAll(".arc").forEach(p=>{p.addEventListener("mouseenter",()=>show(p.dataset.k));p.addEventListener("focus",()=>show(p.dataset.k));p.addEventListener("click",()=>show(p.dataset.k))});
+  box.addEventListener("mouseleave",()=>{box.classList.remove("dim");box.querySelectorAll(".arc").forEach(p=>p.classList.remove("on"))});
+}
+
+/* ---------- FACTION PAGE ---------- */
+function chip(id,ghost){
+  const p=D.people[id];
+  const mv=[...p.from.map(f=>`${seal(f)}<span>→</span>`), ...p.to.map(f=>`<span>→</span>${seal(f)}`)];
+  let lbl="";
+  if(ghost){lbl=`<span class="mv">từ ${seal(p.f)}</span>`}
+  else if(mv.length){lbl=`<span class="mv" title="${p.from.length?"Từ "+p.from.map(f=>short(FX[f])).join(", "):""}${p.to.length?" Sau sang "+p.to.map(f=>short(FX[f])).join(", "):""}">${p.from.map(f=>seal(f)+"<span>›</span>").join("")}${p.to.map(f=>"<span>›</span>"+seal(f)).join("")}</span>`}
+  return `<button class="chip ${p.k?"key":""} ${ghost?"ghost":""}" data-id="${esc(id)}" style="${fc(p.f)}"><span class="n">${esc(disp(p.n))}</span>${p.t?`<span class="t">${esc(p.t)}</span>`:""}${lbl}</button>`;
+}
+
+function renderFaction(fid){
+  curFid=fid;const f=FX[fid],ids=D.byF[fid];
+  const incoming=Object.entries(D.people).filter(([id,p])=>p.f!==fid&&p.to.includes(fid)).map(x=>x[0]);
+  const groups=f.groups.map(g=>({t:g.t,p:g.p,ghost:false}));
+  if(incoming.length)groups.push({t:"Đến từ phe khác",p:incoming,ghost:true});
+  const total=ids.length+incoming.length;
+  const tree=treeSVG(fid);
+  const prev=D.factions[f.i-1],next=D.factions[f.i+1];
+  $("#view").innerHTML=`
+  <section class="fhead" style="${fc(fid)}">
+    <div class="water han" data-depth="0.22" aria-hidden="true">${f.han}</div>
+    <div class="wrap">
+      <div class="crumb"><a href="#">Nhân Vật Chí</a><span>/</span><span>Trang ${f.i+1} trên ${D.factions.length}</span></div>
+      <h1>${esc(f.name)}</h1>
+      <div class="era">${esc(f.era)}</div>
+      <p>${esc(f.desc)}</p>
+      <div class="stats"><div><b>${ids.length}</b><span>nhân vật ghi ở trang này</span></div>${incoming.length?`<div><b>${incoming.length}</b><span>người từ phe khác sang</span></div>`:""}<div><b>${f.groups.length}</b><span>nhóm</span></div></div>
+      <div class="jump">${tree?'<a href="#" data-to="s-tree">Gia phả</a>':""}<a href="#" data-to="s-org">Sơ đồ tổ chức</a><a href="#" data-to="s-flow">Dòng người đến và đi</a></div>
+    </div>
+  </section>
+  ${tree?`<section class="block" id="s-tree" style="${fc(fid)}"><div class="wrap">
+    <div class="sec-head"><h2>Gia phả</h2><p>Các dòng họ chính trong phe. Ô viền đứt là người được ghi ở trang khác.</p></div>
+    <div class="scroller tree tree-wide">${tree}</div><ul class="tlist">${treeList(fid)}</ul>
+    <div class="legend"><span><i></i>cha con</span><span><i class="d"></i>con nuôi</span><span><i class="s"></i>vợ chồng</span></div>
+  </div></section>`:""}
+  <section class="block" id="s-org" style="${fc(fid)}${tree?";padding-top:0":""}"><div class="wrap">
+    <div class="sec-head"><h2>Sơ đồ tổ chức</h2><p>${total} người. Tên in đậm là nhân vật chính; ấn nhỏ bên phải cho biết người ấy từ phe nào đến (ấn đứng trước) hay về sau sang phe nào (ấn đứng sau).</p></div>
+    <div class="org">
+      <div class="root"><div class="rootseal">${seal(fid)}<b>${esc(f.name)}</b></div></div>
+      <div class="trunk"></div>
+      <div class="branches">${groups.map(g=>`<div class="branch"><h3>${esc(g.t)}<small>${g.p.length}</small></h3><ul>${g.p.map(id=>`<li>${chip(id,g.ghost)}</li>`).join("")}</ul></div>`).join("")}</div>
+    </div>
+  </div></section>
+  <section class="block" id="s-flow" style="${fc(fid)};padding-top:0"><div class="wrap">
+    <div class="sec-head"><h2>Dòng người đến và đi</h2><p>Ai bỏ phe khác về đây, và ai từ đây ra đi.</p></div>
+    ${flowHTML(fid)}
+  </div></section>
+  <div class="wrap"><nav class="pager" aria-label="Trang khác">
+    ${prev?`<a class="prev" href="#${prev.id}" style="${fc(prev.id)}">${seal(prev.id)}<span><small>Trang trước</small><b>${esc(prev.name)}</b></span></a>`:`<a class="prev" href="#">${'<span class="seal" style="--fc:var(--seal)">三</span>'}<span><small>Trở về</small><b>Mục lục</b></span></a>`}
+    ${next?`<a class="next" href="#${next.id}" style="${fc(next.id)}">${seal(next.id)}<span><small>Trang sau</small><b>${esc(next.name)}</b></span></a>`:""}
+  </nav></div>`;
+  document.querySelectorAll(".jump a").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();document.getElementById(a.dataset.to).scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"})}));
+  bindPeople($("#view"));
+  requestAnimationFrame(drawFlowLinks);
+  setupParallax();
+}
+
+function flowHTML(fid){
+  const inn={},out={};
+  moves().forEach(([a,b,id])=>{if(b===fid&&a!==fid)(inn[a]=inn[a]||[]).push(id);if(a===fid&&b!==fid)(out[b]=out[b]||[]).push(id)});
+  const col=(obj,dir)=>{const ks=Object.keys(obj).sort((x,y)=>obj[y].length-obj[x].length);
+    if(!ks.length)return `<div class="empty">${dir==="in"?"Không ai từ phe khác sang.":"Không ai rời phe này."}</div>`;
+    return ks.map(k=>`<div class="row" data-f="${k}" style="${fc(k)}"><a class="seal ${FX[k].han.length>1?"two":""}" href="#${k}" style="${fc(k)}" title="${esc(FX[k].name)}">${FX[k].han}</a><span class="lbl">${dir==="in"?"Từ ":"Sang "}${esc(short(FX[k]))} · ${obj[k].length}</span><div class="who">${obj[k].map(id=>`<button data-id="${esc(id)}">${esc(disp(D.people[id].n))}</button>`).join("")}</div></div>`).join("")};
+  return `<div class="flow" id="flow"><svg class="links" aria-hidden="true"></svg>
+    <div class="col in"><h3>Đến</h3>${col(inn,"in")}</div>
+    <div class="hub">${seal(fid)}<b>${esc(short(FX[fid]))}</b></div>
+    <div class="col out"><h3>Đi</h3>${col(out,"out")}</div></div>`;
+}
+function drawFlowLinks(){
+  const fl=$("#flow");if(!fl)return;const svg=fl.querySelector("svg.links");if(getComputedStyle(svg).display==="none")return;
+  const R=fl.getBoundingClientRect(),hub=fl.querySelector(".hub .seal").getBoundingClientRect();
+  const hx1=hub.left-R.left,hx2=hub.right-R.left,hy=hub.top-R.top+hub.height/2;let d="";
+  fl.querySelectorAll(".col.in .row").forEach(r=>{const b=r.getBoundingClientRect(),x=b.right-R.left,y=b.top-R.top+22;d+=`<path d="M${x},${y} C${(x+hx1)/2},${y} ${(x+hx1)/2},${hy} ${hx1},${hy}" stroke="${COLORS[r.dataset.f]}" stroke-width="${Math.min(2+r.querySelectorAll("button").length,10)}"/>`});
+  fl.querySelectorAll(".col.out .row").forEach(r=>{const b=r.getBoundingClientRect(),x=b.left-R.left,y=b.top-R.top+22;d+=`<path d="M${hx2},${hy} C${(x+hx2)/2},${hy} ${(x+hx2)/2},${y} ${x},${y}" stroke="${COLORS[curFid]}" stroke-width="${Math.min(2+r.querySelectorAll("button").length,10)}"/>`});
+  svg.innerHTML=d;
+}
+window.addEventListener("resize",()=>requestAnimationFrame(()=>{drawFlowLinks();if(MAP&&$("#regs")&&window._mapMob!==matchMedia("(max-width:760px)").matches){drawMap();paintEra()}}));
+
+/* ---------- family tree ---------- */
+function treeList(fid){
+  const t=D.trees[fid];if(!t||!t.e.length)return "";
+  const kids={},par={},sp={};
+  t.e.forEach(([a,b,ad])=>{if(par[b])return;par[b]=[a,ad];(kids[a]=kids[a]||[]).push(b)});
+  t.s.forEach(([a,b])=>{(sp[a]=sp[a]||[]).push(b)});
+  const order=[];const seen=new Set();t.e.forEach(([a,b])=>[a,b].forEach(x=>{if(!seen.has(x)){seen.add(x);order.push(x)}}));
+  const item=(n,ad)=>{const p=D.people[n],g=p.f!==fid;
+    return `<li class="${ad?"ad":""}"><button class="tn ${p.k&&!g?"key":""} ${g?"ghost":""}" data-id="${esc(n)}" style="${fc(p.f)}"><b>${esc(disp(p.n))}</b>${p.t?`<small>${esc(p.t)}</small>`:""}${ad?'<span class="adl">con nuôi</span>':""}${g?`<small>· ${esc(short(FX[p.f]))}</small>`:""}${sp[n]?`<span class="sp">${sp[n].map(x=>esc(disp(D.people[x].n))).join(", ")}</span>`:""}</button>${kids[n]?`<ul>${kids[n].map(k=>item(k,par[k][1])).join("")}</ul>`:""}</li>`};
+  return order.filter(n=>!par[n]).map(n=>item(n,0)).join("");
+}
+function treeSVG(fid){
+  const t=D.trees[fid];if(!t||!t.e.length)return "";
+  const kids={},par={},sp={};
+  t.e.forEach(([a,b,ad])=>{if(par[b])return;par[b]=[a,ad];(kids[a]=kids[a]||[]).push(b)});
+  t.s.forEach(([a,b])=>{(sp[a]=sp[a]||[]).push(b)});
+  const order=[];const seen=new Set();const add=x=>{if(!seen.has(x)){seen.add(x);order.push(x)}};
+  t.e.forEach(([a,b])=>{add(a);add(b)});
+  const roots=order.filter(n=>!par[n]);
+  const NW=136,NH=44,G=14,LV=92,SG=22;
+  const bw=n=>NW+(sp[n]?sp[n].length*(NW+SG):0);
+  const wm={};const W=n=>{if(wm[n])return wm[n];const c=kids[n]||[];const cs=c.reduce((s,k)=>s+W(k),0)+G*Math.max(0,c.length-1);return wm[n]=Math.max(bw(n),cs)};
+  // pack components into rows
+  const maxRow=1150;const rows=[[]];let rw=0;
+  roots.forEach(r=>{const w=W(r);if(rw>0&&rw+w>maxRow){rows.push([]);rw=0}rows[rows.length-1].push(r);rw+=w+40});
+  const depth=n=>1+Math.max(0,...(kids[n]||[]).map(depth));
+  let out="",y0=20,maxX=0;
+  const node=(id,x,y,spouse)=>{const p=D.people[id],ghost=p.f!==fid;const nm=disp(p.n);const fs=nm.length>17?11:12.5;
+    return `<g class="node ${p.k&&!ghost?"key":""} ${ghost?"ghost":""}" data-id="${esc(id)}" tabindex="0" role="button" aria-label="${esc(p.n)}" style="${fc(p.f)}"><rect class="box" x="${x}" y="${y}" width="${NW}" height="${NH}" rx="6" ${ghost?`style="stroke:${COLORS[p.f]}"`:""}/><text class="nm" x="${x+NW/2}" y="${y+(p.t?19:27)}" text-anchor="middle" style="font-size:${fs}px">${esc(nm)}</text>${p.t?`<text class="tu" x="${x+NW/2}" y="${y+34}" text-anchor="middle">${esc(p.t)}</text>`:""}</g>`};
+  const place=(n,x,y)=>{
+    const w=W(n),bx=x+(w-bw(n))/2;out+=node(n,bx,y);
+    (sp[n]||[]).forEach((s,i)=>{const sx=bx+(i+1)*(NW+SG);out+=`<line class="sp" x1="${sx-SG}" y1="${y+NH/2-2}" x2="${sx}" y2="${y+NH/2-2}"/><line class="sp" x1="${sx-SG}" y1="${y+NH/2+2}" x2="${sx}" y2="${y+NH/2+2}"/>`+node(s,sx,y)});
+    maxX=Math.max(maxX,x+w);
+    const c=kids[n]||[];if(!c.length)return;
+    const cs=c.reduce((s,k)=>s+W(k),0)+G*(c.length-1);let cx=x+(w-cs)/2;
+    const px=bx+NW/2,py=y+NH,my=y+NH+(LV-NH)/2;
+    const centers=[];
+    c.forEach(k=>{const kw=W(k);const kbx=cx+(kw-bw(k))/2;centers.push([kbx+NW/2,par[k][1]]);place(k,cx,y+LV);cx+=kw+G});
+    out+=`<path class="ln" d="M${px},${py} V${my}"/>`;
+    const xs=centers.map(c=>c[0]);out+=`<path class="ln" d="M${Math.min(px,...xs)},${my} H${Math.max(px,...xs)}"/>`;
+    centers.forEach(([cxx,ad])=>out+=`<path class="ln ${ad?"adopt":""}" d="M${cxx},${my} V${y+LV}"/>`);
+  };
+  rows.forEach(r=>{let x=20,dmax=1;r.forEach(n=>{place(n,x,y0);x+=W(n)+40;dmax=Math.max(dmax,depth(n))});y0+=dmax*LV+30});
+  // draw lines beneath nodes: move paths first
+  const lines=out.match(/<(path|line)[^>]*\/>/g)||[],nodes=out.replace(/<(path|line)[^>]*\/>/g,"");
+  const Wd=maxX+20,Hd=y0-10;
+  return `<svg width="${Wd}" height="${Hd}" viewBox="0 0 ${Wd} ${Hd}" role="img" aria-label="Gia phả ${esc(FX[fid].name)}">${lines.join("")}${nodes}</svg>`;
+}
+
+/* ---------- drawer ---------- */
+function bindPeople(root){
+  root.addEventListener("click",e=>{const el=e.target.closest("[data-id]");if(el&&root.contains(el)){e.preventDefault();openPerson(el.dataset.id)}});
+  root.addEventListener("keydown",e=>{const el=e.target.closest("g[data-id]");if(el&&(e.key==="Enter"||e.key===" ")){e.preventDefault();openPerson(el.dataset.id)}});
+}
+let lastFocus=null;
+function openPerson(id){
+  const p=D.people[id];if(!p)return;
+  const dr=$("#drawer"),sc=$("#scrim");
+  if(!dr.classList.contains("on"))lastFocus=document.activeElement;
+  const path=[...p.from,p.f,...p.to];
+  const thread=path.length>1?`<h4>Sợi chỉ phe phái</h4><div class="thread">${path.map((f,i)=>`${i?'<span class="str"></span>':""}<a href="#${f}" class="${f===p.f?"cur":""}" style="${fc(f)}">${seal(f)}<span>${esc(short(FX[f]))}</span></a>`).join("")}</div>`:"";
+  const rels=(D.relOf[id]||[]).map(([o,l])=>{const q=D.people[o];return `<li><button data-id="${esc(o)}" style="${fc(q.f)}">${seal(q.f)}<span><b>${esc(disp(q.n))}</b><small>${esc(l)}</small></span></button></li>`}).join("");
+  dr.setAttribute("style",fc(p.f));
+  dr.innerHTML=`<button class="close" aria-label="Đóng">×</button>
+    <div class="who">${seal(p.f)}<div><h2>${esc(disp(p.n))}</h2><div class="tu">${p.t?`Tự hoặc hiệu: ${esc(p.t)} · `:""}${esc(FX[p.f].name)}</div></div></div>
+    <p class="note">${esc(p.d)}</p>
+    ${thread}
+    ${rels?`<h4>Quan hệ</h4><ul class="rels">${rels}</ul>`:""}
+    ${p.f!==curFid?`<a class="go" href="#${p.f}" data-goto="${esc(id)}">Mở trang ${esc(FX[p.f].name)} →</a>`:""}`;
+  dr.hidden=false;sc.hidden=false;
+  requestAnimationFrame(()=>{dr.classList.add("on");sc.classList.add("on")});
+  dr.querySelector(".close").addEventListener("click",()=>closeDrawer());
+  dr.querySelectorAll(".rels button").forEach(b=>b.addEventListener("click",()=>openPerson(b.dataset.id)));
+  const go=dr.querySelector(".go");if(go)go.addEventListener("click",()=>{pendingFocus=id});
+  dr.querySelectorAll(".thread a").forEach(a=>a.addEventListener("click",()=>{pendingFocus=id}));
+  dr.querySelector(".close").focus({preventScroll:true});
+  highlight(id);
+}
+let pendingFocus=null;
+function closeDrawer(silent){
+  const dr=$("#drawer"),sc=$("#scrim");if(!dr.classList.contains("on"))return;
+  dr.classList.remove("on");sc.classList.remove("on");
+  setTimeout(()=>{if(!dr.classList.contains("on")){dr.hidden=true;sc.hidden=true}},300);
+  if(!silent&&lastFocus&&document.contains(lastFocus))lastFocus.focus({preventScroll:true});
+}
+function highlight(id){
+  const el=document.querySelector(`.chip[data-id="${CSS.escape(id)}"]:not(.ghost)`)||document.querySelector(`.chip[data-id="${CSS.escape(id)}"]`);
+  if(!el)return;el.classList.remove("flash");void el.offsetWidth;el.classList.add("flash");
+  const r=el.getBoundingClientRect();if(r.top<80||r.bottom>innerHeight)el.scrollIntoView({block:"center",behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+}
+window.addEventListener("hashchange",()=>{if(pendingFocus){const id=pendingFocus;pendingFocus=null;setTimeout(()=>openPerson(id),60)}});
+
+/* ---------- search ---------- */
+function setupSearch(){
+  const q=$("#q"),box=$("#results");let sel=-1,list=[];
+  const render=()=>{const v=fold(q.value.trim());if(!v){box.hidden=true;return}
+    list=D.idx.filter(([id,s])=>s.includes(v)).sort((a,b)=>(b[1].startsWith(v)-a[1].startsWith(v))||(D.people[b[0]].k-D.people[a[0]].k)).slice(0,14).map(x=>x[0]);
+    sel=list.length?0:-1;
+    box.innerHTML=list.length?list.map((id,i)=>{const p=D.people[id];return `<button role="option" aria-selected="${i===sel}" data-r="${esc(id)}">${seal(p.f,"","width:26px;height:26px;font-size:"+(FX[p.f].han.length>1?"10px":"13px"))}<span><b>${esc(p.n)}</b>${p.t?` <small>${esc(p.t)}</small>`:""}<br><small>${esc(FX[p.f].name)}</small></span></button>`}).join(""):'<div class="none">Không tìm thấy. Thử gõ không dấu, ví dụ "trieu van".</div>';
+    box.hidden=false};
+  const pick=id=>{box.hidden=true;q.value="";const p=D.people[id];if(curFid!==p.f){pendingFocus=id;location.hash=p.f}else openPerson(id)};
+  q.addEventListener("input",render);
+  q.addEventListener("keydown",e=>{if(box.hidden)return;
+    if(e.key==="ArrowDown"||e.key==="ArrowUp"){e.preventDefault();sel=(sel+(e.key==="ArrowDown"?1:-1)+list.length)%list.length;box.querySelectorAll("button").forEach((b,i)=>b.setAttribute("aria-selected",i===sel))}
+    else if(e.key==="Enter"&&sel>=0){e.preventDefault();pick(list[sel])}
+    else if(e.key==="Escape"){box.hidden=true}});
+  box.addEventListener("click",e=>{const b=e.target.closest("[data-r]");if(b)pick(b.dataset.r)});
+  document.addEventListener("click",e=>{if(!e.target.closest(".search"))box.hidden=true});
+}
+
+/* ---------- depth ---------- */
+let parTick=false;
+function setupParallax(){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  const planes=[...document.querySelectorAll("[data-depth]")];
+  let mx=0,my=0;
+  const apply=()=>{parTick=false;const sy=scrollY;planes.forEach(p=>{const d=+p.dataset.depth;p.style.transform=p.classList.contains("water")?`translateY(calc(-50% + ${sy*d}px)) translateX(${mx*d*-30}px)`:`translate3d(${mx*d*-40}px,${sy*d+my*d*-24}px,0)`})};
+  if(!window._parBound){window._parBound=true;
+    addEventListener("scroll",()=>{if(!parTick){parTick=true;requestAnimationFrame(()=>window._parApply&&window._parApply())}},{passive:true});
+    addEventListener("pointermove",e=>{if(e.pointerType!=="mouse")return;window._mx=(e.clientX/innerWidth-.5);window._my=(e.clientY/innerHeight-.5);if(!parTick){parTick=true;requestAnimationFrame(()=>window._parApply&&window._parApply())}},{passive:true});
+  }
+  window._parApply=()=>{mx=window._mx||0;my=window._my||0;apply()};
+  window._parApply();
+}
+</script>
+
+</body>
+</html>
