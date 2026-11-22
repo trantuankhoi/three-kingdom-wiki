@@ -14,6 +14,7 @@
 <style>
 /* Layout: a hồ sơ (dossier) of hand-pressed seals on celadon paper. Home = cover + map of who changed lords; each faction = one page: gia phả, sơ đồ tổ chức, dòng người đến đi. */
 :root{
+  --paper-img:#FBFBF7; --ink-filter:grayscale(1) contrast(1.08);
   --bg:#ECEFE9; --paper:#F6F7F2; --ink:#1C2220; --ink-soft:#5A6560; --rule:#C9D0C8; --seal:#B23A2B; --seal-ink:#FFF8F2;
   --fcmix:0%;
   --font-display:"Alegreya", "Noto Serif", Georgia, serif;
@@ -21,8 +22,8 @@
   --font-han:"Noto Serif TC", "Songti TC", "PMingLiU", serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#101614; --paper:#17201D; --ink:#E3E8E1; --ink-soft:#9AA79F; --rule:#2C3833; --seal:#D4553F; --seal-ink:#1A0F0C; --fcmix:48%; color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#101614; --paper:#17201D; --ink:#E3E8E1; --ink-soft:#9AA79F; --rule:#2C3833; --seal:#D4553F; --seal-ink:#1A0F0C; --fcmix:48%; color-scheme:dark}
+  --paper-img:#E8EBE4; --bg:#101614; --paper:#17201D; --ink:#E3E8E1; --ink-soft:#9AA79F; --rule:#2C3833; --seal:#D4553F; --seal-ink:#1A0F0C; --fcmix:48%; color-scheme:dark}}
+:root[data-theme="dark"]{--paper-img:#E8EBE4; --bg:#101614; --paper:#17201D; --ink:#E3E8E1; --ink-soft:#9AA79F; --rule:#2C3833; --seal:#D4553F; --seal-ink:#1A0F0C; --fcmix:48%; color-scheme:dark}
 
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -203,6 +204,19 @@ section.block{padding-block:clamp(40px,6vw,72px)}
 .drawer h2{font-size:30px;font-weight:800}
 .drawer .tu{color:var(--ink-soft);margin-top:4px}
 .drawer .note{font-size:16px;margin-top:18px}
+.portrait{position:relative;margin:4px 0 18px;border:1px solid var(--rule);border-radius:10px;background:var(--paper-img);overflow:hidden;display:grid;place-items:center}
+.portrait img{display:block;width:100%;max-height:min(420px,42vh);object-fit:contain;mix-blend-mode:multiply;filter:var(--ink-filter)}
+.portrait figcaption{position:absolute;left:8px;bottom:6px;font-size:11px;color:var(--ink-soft);background:color-mix(in oklab, var(--paper) 85%, transparent);padding:2px 6px;border-radius:4px}
+.portrait.card{height:min(300px,34vh);background:var(--paper)}
+.portrait.card .frame{position:absolute;inset:12px;border:1.5px solid color-mix(in oklab, var(--fc-ink) 55%, var(--rule));border-radius:4px;box-shadow:inset 0 0 0 5px var(--paper),inset 0 0 0 6px color-mix(in oklab, var(--fc-ink) 30%, var(--rule))}
+.portrait.card .inner{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;padding:24px}
+.portrait.card .seal{width:64px;height:64px;font-size:32px;border-radius:8px;transform:rotate(-4deg)}
+.portrait.card b{font-family:var(--font-display);font-size:26px;line-height:1.1;color:var(--fc-ink)}
+.portrait.card small{font-size:12px;color:var(--ink-soft)}
+.quotes{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.quotes li{position:relative;padding:12px 14px 10px 18px;background:var(--bg);border-left:3px solid var(--seal);border-radius:0 8px 8px 0}
+.quotes q{display:block;font-family:var(--font-display);font-size:17px;line-height:1.45;quotes:"“" "”";white-space:pre-line}
+.quotes cite{display:block;margin-top:6px;font-style:normal;font-size:12px;color:var(--ink-soft)}
 .drawer h4{margin:26px 0 10px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
 .thread{display:flex;align-items:center;flex-wrap:wrap;gap:0;row-gap:10px}
 .thread a{display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;font-size:11.5px;max-width:84px;text-align:center}
@@ -357,6 +371,7 @@ footer p{max-width:72ch;margin:0 0 8px}
 <footer><div class="wrap">
   <p>Tên người, tên tự và cách phiên âm theo bản dịch <i>Tam quốc diễn nghĩa</i> của Phan Kế Bính (Bùi Kỷ hiệu đính). Mỗi người được ghi ở phe gắn bó lâu nhất; người đổi chủ có ấn phe cũ hoặc phe mới bên cạnh tên, và hiện cả ở trang phe kia.</p>
   <p>Truyện có hơn một nghìn tên người. Bản này gồm những người có vai trò hoặc có việc làm được kể lại; một số người chỉ được nhắc tên một lần trong một câu có thể chưa có mặt.</p>
+  <p>Tú tượng là tranh khắc gỗ đời Thanh in trong các bản <i>Tăng tượng toàn đồ Tam quốc diễn nghĩa</i>, lấy từ Wikimedia Commons (phạm vi công cộng); mỗi tranh có link về trang gốc. Lời nói trích nguyên văn bản dịch Phan Kế Bính, Bùi Kỷ hiệu đính, trên Wikisource tiếng Việt, kèm số hồi.</p>
 </div></footer>
 
 <script>
@@ -722,7 +737,9 @@ function openPerson(id){
   dr.setAttribute("style",fc(p.f));
   dr.innerHTML=`<button class="close" aria-label="Đóng">×</button>
     <div class="who">${seal(p.f)}<div><h2>${esc(disp(p.n))}</h2><div class="tu">${p.t?`Tự hoặc hiệu: ${esc(p.t)} · `:""}${esc(FX[p.f].name)}</div></div></div>
+    ${p.img?`<figure class="portrait"><img src="${esc(p.img)}" alt="Tú tượng ${esc(disp(p.n))}, tranh khắc gỗ đời Thanh" loading="lazy"><figcaption>Tú tượng khắc gỗ đời Thanh${p.isrc?` · <a href="${esc(p.isrc)}" target="_blank" rel="noopener">nguồn</a>`:""}</figcaption></figure>`:`<figure class="portrait card" aria-hidden="true"><span class="frame"></span><span class="inner">${seal(p.f)}<b>${esc(disp(p.n))}</b><small>Chưa có tú tượng</small></span></figure>`}
     <p class="note">${esc(p.d)}</p>
+    ${p.q?`<h4>Lời nói trong truyện</h4><ul class="quotes">${p.q.map(([h,t])=>`<li><q>${esc(t.replace(/ \/ /g,"\n"))}</q><cite>Hồi ${h}</cite></li>`).join("")}</ul>`:""}
     ${thread}
     ${rels?`<h4>Quan hệ</h4><ul class="rels">${rels}</ul>`:""}
     ${p.f!==curFid?`<a class="go" href="#${p.f}" data-goto="${esc(id)}">Mở trang ${esc(FX[p.f].name)} →</a>`:""}`;
